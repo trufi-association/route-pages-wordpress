@@ -1,0 +1,74 @@
+<style>
+  #map-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 75%;
+    overflow: hidden;
+  }
+
+  #map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<h3 id="routeName"></h3>
+<div id="map-container">
+  <div id="map"></div>
+</div>
+
+<script>
+  const map = L.map('map').setView([0, 0], 13);
+  const mapId = '{{mapId}}';
+  const apiUrl = '{{apiUrl}}';
+
+  const query = `
+      query parking($id: String!) {
+        pattern(id: $id) {
+          route {
+            id, shortName, longName
+          },
+          geometry {
+            lat, lon
+          }
+        }
+      }
+    `;
+
+  const variables = {
+    id: mapId,
+  };
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://trufi.app">Trufi Association</a> contributors',
+  }).addTo(map);
+
+  fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const coordinates = data.data.pattern.geometry.map((point) => [point.lat, point.lon]);
+      const polyline = L.polyline(coordinates, {
+        color: '{{lineColor}}',
+        weight: '{{lineWeight}}'
+      }).addTo(map);
+
+      map.fitBounds(polyline.getBounds());
+      document.querySelector('#routeName').innerHTML = data.data.pattern.route.longName;
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+</script>
