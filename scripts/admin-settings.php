@@ -16,6 +16,8 @@ function trufi_api_options_page()
   $apple_store_url = get_option(TRUFI_APPLE_STORE_URL_OPTION);
   $google_play_image = get_option(TRUFI_GOOGLE_PLAY_IMAGE_OPTION);
   $apple_store_image = get_option(TRUFI_APPLE_STORE_IMAGE_OPTION);
+  $cache_ttl = get_option(TRUFI_CACHE_TTL_OPTION);
+  if (!$cache_ttl) $cache_ttl = 24;
 
 
   if (isset($_POST['trufi_api_options_nonce'])) {
@@ -31,6 +33,7 @@ function trufi_api_options_page()
     $apple_store_url = $_POST['trufi_apple_store_url'];
     $google_play_image = $_POST['trufi_google_play_image'];
     $apple_store_image = $_POST['trufi_apple_store_image'];
+    $cache_ttl = $_POST['trufi_cache_ttl'];
 
     update_option(TRUFI_API_URL_OPTION, $api_url);
     update_option(TRUFI_SITE_DESCRIPTION_OPTION, $site_description);
@@ -40,6 +43,7 @@ function trufi_api_options_page()
     update_option(TRUFI_APPLE_STORE_URL_OPTION, $apple_store_url);
     update_option(TRUFI_GOOGLE_PLAY_IMAGE_OPTION, $google_play_image);
     update_option(TRUFI_APPLE_STORE_IMAGE_OPTION, $apple_store_image);
+    update_option(TRUFI_CACHE_TTL_OPTION, $cache_ttl);
 
     echo '<div class="notice notice-success"><p>' . __('Configuration saved.', 'trufi-maps') . '</p></div>';
   }

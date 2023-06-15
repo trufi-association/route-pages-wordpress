@@ -18,3 +18,4 @@ require_once('scripts/admin-settings.php');
 require_once('scripts/enqueue-scripts.php');
 require_once('scripts/rewrite-rules.php');
 require_once('scripts/template-redirect.php');
+require_once('scripts/sitemap-provider.php');

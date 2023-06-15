@@ -8,3 +8,4 @@ define('TRUFI_GOOGLE_PLAY_URL_OPTION', 'trufi_google_play_url');
 define('TRUFI_APPLE_STORE_URL_OPTION', 'trufi_apple_store_url');
 define('TRUFI_GOOGLE_PLAY_IMAGE_OPTION', 'trufi_google_play_image');
 define('TRUFI_APPLE_STORE_IMAGE_OPTION', 'trufi_apple_store_image');
+define('TRUFI_CACHE_TTL_OPTION', 'trufi_cache_ttl');

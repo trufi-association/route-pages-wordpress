@@ -79,6 +79,15 @@
           <img id="trufi_apple_store_image_preview" src="<?php echo esc_attr($apple_store_image); ?>" style="<?php echo (empty($apple_store_image) ? 'display: none;' : ''); ?> max-width: 200px; max-height: 200px;">
         </td>
       </tr>
+      <tr>
+        <th scope="row">
+          <label for="trufi_cache_ttl"><?php _e('Cache TTL (Hours)', 'trufi-maps'); ?></label>
+        </th>
+        <td>
+          <input type="number" name="trufi_cache_ttl" id="trufi_cache_ttl" value="<?php echo esc_attr($cache_ttl); ?>" class="small-text">
+          <p class="description"><?php _e('Enter the time to live (in hours) for the sitemap cache. Set to 0 to disable.', 'trufi-maps'); ?></p>
+        </td>
+      </tr>
     </table>
     <?php submit_button(__('Save Changes', 'trufi-maps')); ?>
   </form>
