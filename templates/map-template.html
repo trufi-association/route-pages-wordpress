@@ -13,9 +13,36 @@
     width: 100%;
     height: 100%;
   }
+
+  .app-store-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 1rem;
+  }
+
+  #google-play-btn,
+  #apple-store-btn {
+    width: 100%;
+  }
+
+  #google-play-btn img,
+  #apple-store-btn img {
+    max-width: 100%;
+    height: auto;
+  }
 </style>
 
 <h3 id="routeName"></h3>
+<h4>{{callToAction}}</h4>
+<div class="app-store-buttons">
+  <a href="{{googlePlayUrl}}" id="google-play-btn">
+    <img src="{{googlePlayImage}}" alt="Descargar en Google Play">
+  </a>
+  <a href="{{appleStoreUrl}}" id="apple-store-btn">
+    <img src="{{appleStoreImage}}" alt="Descargar en la App Store">
+  </a>
+</div>
 <div id="map-container">
   <div id="map"></div>
 </div>
@@ -66,7 +93,7 @@
       }).addTo(map);
 
       map.fitBounds(polyline.getBounds());
-      document.querySelector('#routeName').innerHTML = data.data.pattern.route.longName;
+      document.querySelector('#routeName').innerHTML = `${data.data.pattern.route.longName} - {{pageTitle}}`;
     })
     .catch((error) => {
       console.error('Error fetching data:', error);

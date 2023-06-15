@@ -6,10 +6,14 @@ function trufi_maps_template_redirect()
     $map_id = get_query_var('trufi_map_id');
     $map_name = get_query_var('trufi_map_name');
     $api_url = get_option(TRUFI_API_URL_OPTION);
-    $page_title = get_option(TRUFI_SITE_TITLE_OPTION);
+    $page_title = get_bloginfo('name');
     $page_description = get_option(TRUFI_SITE_DESCRIPTION_OPTION);
     $line_color = get_option(TRUFI_LINE_COLOR_OPTION);
     $line_weight = get_option(TRUFI_LINE_WEIGHT_OPTION);
+    $google_play_url = get_option(TRUFI_GOOGLE_PLAY_URL_OPTION);
+    $apple_store_url = get_option(TRUFI_APPLE_STORE_URL_OPTION);
+    $google_play_image = get_option(TRUFI_GOOGLE_PLAY_IMAGE_OPTION);
+    $apple_store_image = get_option(TRUFI_APPLE_STORE_IMAGE_OPTION);
 
     add_action('wp_head', function () use ($page_title, $page_description) {
       trufi_add_header_tags($page_title, $page_description);
@@ -18,8 +22,14 @@ function trufi_maps_template_redirect()
     $replacement_values = array(
       "{{mapId}}" => $map_id,
       "{{apiUrl}}" => $api_url,
+      "{{pageTitle}}" => $page_title,
       "{{lineColor}}" => $line_color,
       "{{lineWeight}}" => $line_weight,
+      "{{callToAction}}" => $page_description,
+      "{{googlePlayUrl}}" => $google_play_url,
+      "{{appleStoreUrl}}" => $apple_store_url,
+      "{{googlePlayImage}}" => $google_play_image,
+      "{{appleStoreImage}}" => $apple_store_image,
     );
 
     $template_path = plugin_dir_path(__FILE__) . '../templates/map-template.html';
