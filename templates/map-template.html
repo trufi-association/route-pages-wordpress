@@ -15,15 +15,20 @@
   }
 
   .app-store-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @media all and (min-width: 500px) {
+      flex-direction: row;
+    }
   }
 
   #google-play-btn,
   #apple-store-btn {
-    width: 100%;
+    flex: 0 1 48%;
   }
 
   #google-play-btn img,
