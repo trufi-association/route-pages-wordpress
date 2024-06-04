@@ -70,6 +70,7 @@
                     <button type="button" class="upload_image_button button"><?php _e('Upload Image', 'trufi-maps'); ?></button>
                     <p class="description"><?php _e('Upload an image for the Google Play Store button.', 'trufi-maps'); ?></p>
                     <img id="trufi_google_play_image_preview" src="<?php echo esc_attr($google_play_image); ?>"
+                         alt="Google Play Store Image"
                          style="<?php echo(empty($google_play_image) ? 'display: none;' : ''); ?> max-width: 200px; max-height: 200px;">
                 </td>
             </tr>
@@ -82,6 +83,7 @@
                     <button type="button" class="upload_image_button button"><?php _e('Upload Image', 'trufi-maps'); ?></button>
                     <p class="description"><?php _e('Upload an image for the Apple Store button.', 'trufi-maps'); ?></p>
                     <img id="trufi_apple_store_image_preview" src="<?php echo esc_attr($apple_store_image); ?>"
+                         alt="Apple Store Image"
                          style="<?php echo(empty($apple_store_image) ? 'display: none;' : ''); ?> max-width: 200px; max-height: 200px;">
                 </td>
             </tr>
