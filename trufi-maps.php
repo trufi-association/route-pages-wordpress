@@ -19,7 +19,7 @@ $plugin_data = get_plugin_data(__FILE__, false);
 define('TRUFI_ROUTES_PLUGIN_VERSION', ($plugin_data && $plugin_data['Version']) ? $plugin_data['Version'] : '1.0.0');
 
 // check php version if less than 8.0 don't load
-if (version_compare(phpversion(), '8.4', '<')) {
+if (version_compare(phpversion(), '8.0', '<')) {
     add_action('admin_notices', 'trufi_php_version_notice');
     function trufi_php_version_notice()
     {
