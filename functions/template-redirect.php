@@ -53,7 +53,6 @@ function trufi_maps_template_redirect() {
         $template_content = str_replace(array_keys($replacement_values), array_values($replacement_values), $template_content);
 
         global $post;
-
         $post->ID             = $map_page_id;
         $post->post_title     = $page_title;
         $post->post_name      = $mapName;
@@ -65,11 +64,40 @@ function trufi_maps_template_redirect() {
         $post->menu_order     = 0;
         $post->comment_count  = 0;
 
+        /*add_filter('the_content', function ($content) use ($template_content) {
+            return $template_content;
+        });*/
 
-        add_action('the_title', function () use ($page_title) {
-            $title = $page_title;
+
+        function set_route_title($title, $id = null) {
+            // if we are on the map page, set the title to the route name, previously set in post_title
+            if ($id == get_option(TRUFI_MAP_PAGE_ID_OPTION)) {
+                global $post;
+                return $post->post_title;
+            }
             return $title;
-        });
+        }
+
+        add_filter('the_title', 'set_route_title', 10, 2);
+
+        function trufi_remove_title_filter_nav_menu($nav_menu, $args) {
+            // we are working with menu, so remove the title filter
+            remove_filter('the_title', 'set_route_title', 10, 2);
+            return $nav_menu;
+        }
+
+        // this filter fires just before the nav menu item creation process
+        add_filter('pre_wp_nav_menu', 'trufi_remove_title_filter_nav_menu', 10, 2);
+
+        function trufi_add_title_filter_non_menu($items, $args) {
+            // we are done working with menu, so add the title filter back
+            add_filter('the_title', 'set_route_title', 10, 2);
+            return $items;
+        }
+
+        // this filter fires after nav menu item creation is done
+        add_filter('wp_nav_menu_items', 'trufi_add_title_filter_non_menu', 10, 2);
+
 
         global $wp_query;
         $wp_query->is_singular = true;
@@ -78,29 +106,19 @@ function trufi_maps_template_redirect() {
     }
 }
 
-/*add_filter('template_include', function ($template) {
-    global $post;
-    if ($post->ID === 0) {
-
-        $map_page_template = get_option(TRUFI_MAP_PAGE_TEMPLATE_OPTION);
-        $template_path     = false;
-        if ($map_page_template) {
-            $template_path = get_template_directory() . '/' . $map_page_template;
-        }
-
-        if (file_exists($template_path) && !wp_is_block_theme()) {
-            return $template_path;
-        } else {
-            $functions = ['get_page_template', 'get_single_template', 'get_singular_template', 'get_index_template'];
-            foreach ($functions as $function) {
-                $_template = $function();
-
-                if ($_template) {
-                    return $_template;
-                }
-            }
+/**
+ * Disables other posts from being displayed when a route page is requested
+ * Not sure why this happens, seems a bit of a hack but this has corrected it.
+ * @param $query
+ * @return void
+ */
+function disable_other_posts($query) {
+    if (get_query_var('trufi_map_id') && get_query_var('trufi_map_name')) {
+        if ($query->is_main_query() && !is_admin()) {
+             $query->set('posts_per_page', '1');
+            $query->set('p', 0);
         }
     }
+}
 
-    return $template;
-});*/
+add_action('pre_get_posts', 'disable_other_posts');

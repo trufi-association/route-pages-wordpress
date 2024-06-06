@@ -4,7 +4,7 @@
  * Plugin Name: Trufi Route Pages
  * Plugin URI: https://trufi.app/
  * Description: A plugin for displaying Trufi Maps.
- * Version: 0.8.2
+ * Version: 0.8.4
  * Author: Trufi Association
  * Author URI: https://trufi.app/
  * License: GPL2
