@@ -24,7 +24,7 @@ class TrufiApi {
      *
      * @return array|null
      */
-    public function query(string|array $query, string|array $variables = null): array|null {
+    public function query( $query,  $variables = null) {
         if (is_array($query)) {
             $query = json_encode($query);
         }
@@ -62,7 +62,7 @@ class TrufiApi {
      *
      * @return array|null
      */
-    public function fetchRoute(string $routeId): array|null {
+    public function fetchRoute(string $routeId) {
         $query     = 'query parking($id: String!) { 
                     pattern(id: $id) { 
                         route { id, shortName, longName }, 
@@ -79,7 +79,7 @@ class TrufiApi {
      *
      * @return array|null
      */
-    public function routeUrlList(): array|null {
+    public function routeUrlList() {
         $body = '{
             patterns{
                 code, route{ longName }

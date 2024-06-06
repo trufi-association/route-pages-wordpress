@@ -1,5 +1,6 @@
+<?php global $plugin_url; ?>
 <div class="wrap">
-    <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+    <h1><img src="<?php echo $plugin_url . '/assets/img/trufi-logo.svg' ?>" alt="Trufi Logo"/>&nbsp;<?php echo esc_html(get_admin_page_title()); ?></h1>
     <form method="post" action="">
         <?php wp_nonce_field('trufi_api_options_nonce', 'trufi_api_options_nonce'); ?>
         <table class="form-table">

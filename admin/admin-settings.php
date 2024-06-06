@@ -1,6 +1,6 @@
 <?php
 
-function trufi_api_options_page() {
+function trufi_routes_settings_page() {
     if (!current_user_can('manage_options')) {
         wp_die('You do not have sufficient permissions to access this page.');
     }
@@ -50,20 +50,35 @@ function trufi_api_options_page() {
         add_action('init', 'trufi_maps_add_rewrite_rules');
 
 
-        echo '<div class="notice notice-success"><p>' . __('Configuration saved.', 'TrufiApi-maps') . '</p></div>';
+        echo '<div class="notice notice-success is-dismissible"><p>' . __('Configuration saved.', 'TrufiApi-maps') . '</p></div>';
     }
 
     include(plugin_dir_path(__FILE__) . '../templates/admin-settings-form.php');
 }
 
-function trufi_api_add_options_page() {
-    add_options_page(
+function trufi_routes_add_settings_menu_page() {
+    global $plugin_dir;
+    $svg = file_get_contents($plugin_dir . '/assets/img/trufi-logo.svg');
+    $icon_url = 'data:image/svg+xml;base64,' . base64_encode($svg);
+
+    add_menu_page(
         __('Trufi Route Pages Settings', 'TrufiApi-routes'),
-        __('Trufi Route Pages', 'TrufiApi-routes'),
+        __('Trufi Routes', 'TrufiApi-routes'),
         'manage_options',
-        'TrufiApi-api-settings',
-        'trufi_api_options_page'
+        'trufi-routes-settings',
+        false,
+        $icon_url
     );
+    add_submenu_page(
+        'trufi-routes-settings',
+        __('Trufi Route Pages Settings', 'TrufiApi-routes'),
+        __('Settings', 'TrufiApi-routes'),
+        'manage_options',
+        'trufi-routes-settings',
+        'trufi_routes_settings_page'
+    );
+
 }
 
-add_action('admin_menu', 'trufi_api_add_options_page');
+add_action('admin_menu', 'trufi_routes_add_settings_menu_page');
+
