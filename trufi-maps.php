@@ -4,7 +4,7 @@
  * Plugin Name: Trufi Route Pages
  * Plugin URI: https://trufi.app/
  * Description: A plugin for displaying Trufi Maps.
- * Version: 0.7.1
+ * Version: 0.8
  * Author: Trufi Association
  * Author URI: https://trufi.app/
  * License: GPL2
@@ -12,17 +12,22 @@
  * Text Domain: TrufiApi-maps
  */
 
-if( ! function_exists('get_plugin_data') ){
-    require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if (!function_exists('get_plugin_data')) {
+    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 }
-$plugin_data = get_plugin_data( __FILE__, false );
-define( 'TRUFI_ROUTES_PLUGIN_VERSION', ($plugin_data && $plugin_data['Version']) ? $plugin_data['Version'] : '1.0.0' );
+$plugin_data = get_plugin_data(__FILE__, false);
+define('TRUFI_ROUTES_PLUGIN_VERSION', ($plugin_data && $plugin_data['Version']) ? $plugin_data['Version'] : '1.0.0');
 
-include_once('api/TrufiApi.php');
-require_once('scripts/constants.php');
-require_once('scripts/functions.php');
-require_once('scripts/admin-settings.php');
-require_once('scripts/enqueue-scripts.php');
-require_once('scripts/rewrite-rules.php');
-require_once('scripts/template-redirect.php');
-require_once('scripts/sitemap-provider.php');
+require('functions/constants.php');
+require('api/TrufiApi.php');
+
+//if (is_admin()) {
+    require('admin/transient-cache-clear.php');
+    require('admin/admin-settings.php');
+//}
+
+require('functions/functions.php');
+require('functions/enqueue-scripts.php');
+require('functions/rewrite-rules.php');
+require('functions/template-redirect.php');
+require('functions/sitemap-provider.php');

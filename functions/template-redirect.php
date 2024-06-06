@@ -5,12 +5,20 @@ use Api\TrufiApi;
 add_action('template_redirect', 'trufi_maps_template_redirect');
 function trufi_maps_template_redirect() {
     if (get_query_var('trufi_map_id') && get_query_var('trufi_map_name')) {
-        $map_id   = get_query_var('trufi_map_id');
-        $map_name = get_query_var('trufi_map_name');
-        $api_url  = get_option(TRUFI_API_URL_OPTION);
+        $mapId         = get_query_var('trufi_map_id');
+        $mapName       = get_query_var('trufi_map_name');
+        $apiUrl        = get_option(TRUFI_API_URL_OPTION);
+        $cacheKey      = 'trufi_route_data_' . $mapId;
+        $cacheLifetime = get_option(TRUFI_CACHE_TTL_OPTION) * 60 * 60;
 
-        $trufiApi  = new TrufiApi($api_url);
-        $routeData = $trufiApi->fetchRoute($map_id);
+        // Check if the route data is cached
+        $routeData = get_transient($cacheKey);
+        if (false === $routeData) {
+            // Not cached, fetch route data from Trufi API
+            $trufiApi  = new TrufiApi($apiUrl);
+            $routeData = $trufiApi->fetchRoute($mapId);
+            set_transient($cacheKey, $routeData, $cacheLifetime);
+        }
 
         $page_title        = $routeData['data']['pattern']['route']['longName'] . ' - ' . get_bloginfo('name');
         $page_description  = get_option(TRUFI_SITE_DESCRIPTION_OPTION);
@@ -27,8 +35,8 @@ function trufi_maps_template_redirect() {
         });
 
         $replacement_values = [
-            "{{mapId}}"           => $map_id,
-            "{{apiUrl}}"          => $api_url,
+            "{{mapId}}"           => $mapId,
+            "{{apiUrl}}"          => $apiUrl,
             "{{pageTitle}}"       => $page_title,
             "{{lineColor}}"       => $line_color,
             "{{lineWeight}}"      => $line_weight,
@@ -48,7 +56,7 @@ function trufi_maps_template_redirect() {
 
         $post->ID             = $map_page_id;
         $post->post_title     = $page_title;
-        $post->post_name      = $map_name;
+        $post->post_name      = $mapName;
         $post->post_content   = minify_html($template_content);
         $post->comment_status = 'closed';
         $post->post_type      = 'page';

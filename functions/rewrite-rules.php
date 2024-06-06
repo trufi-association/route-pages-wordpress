@@ -1,6 +1,7 @@
 <?php
 
 function trufi_maps_add_rewrite_rules() {
+    flush_rewrite_rules();
     $map_page_id = get_option(TRUFI_MAP_PAGE_ID_OPTION);
     $base_path   = ($map_page_id)
         ? get_post_field('post_name', $map_page_id)
