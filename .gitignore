@@ -58,3 +58,6 @@ wp-config.php
 .docker
 docker-compose.yml
 docker
+
+# Plugin
+/cache/sitemap.json

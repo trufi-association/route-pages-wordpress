@@ -18,11 +18,11 @@ We are a non-profit NGO founded by a group of German and Bolivian volunteers in 
 * **Author URI**: [https://trufi.app/](https://trufi.app/)
 * **License**: GPL2
 * **License URI**: [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
-* **Text Domain**: trufi-maps
+* **Text Domain**: TrufiApi-maps
 
 ## Installation
 
-1. Compress the plugin files in a .zip file named `trufi-maps`.
+1. Compress the plugin files in a .zip file named `TrufiApi-maps`.
 2. Use the regular Wordpress plugin installation process to install the .zip file.
 3. Navigate to Wordpress administration and then configuration.
 4. Set the required values for this plugin, such as the Graphql server URL.

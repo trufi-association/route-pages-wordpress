@@ -4,12 +4,12 @@
  * Plugin Name: Trufi Route Pages
  * Plugin URI: https://trufi.app/
  * Description: A plugin for displaying Trufi Maps.
- * Version: 0.7.0
+ * Version: 0.7.1
  * Author: Trufi Association
  * Author URI: https://trufi.app/
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: trufi-maps
+ * Text Domain: TrufiApi-maps
  */
 
 if( ! function_exists('get_plugin_data') ){
@@ -18,6 +18,7 @@ if( ! function_exists('get_plugin_data') ){
 $plugin_data = get_plugin_data( __FILE__, false );
 define( 'TRUFI_ROUTES_PLUGIN_VERSION', ($plugin_data && $plugin_data['Version']) ? $plugin_data['Version'] : '1.0.0' );
 
+include_once('api/TrufiApi.php');
 require_once('scripts/constants.php');
 require_once('scripts/functions.php');
 require_once('scripts/admin-settings.php');

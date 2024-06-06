@@ -1,12 +1,18 @@
 <?php
 
+use Api\TrufiApi;
+
 add_action('template_redirect', 'trufi_maps_template_redirect');
 function trufi_maps_template_redirect() {
     if (get_query_var('trufi_map_id') && get_query_var('trufi_map_name')) {
-        $map_id            = get_query_var('trufi_map_id');
-        $map_name          = get_query_var('trufi_map_name');
-        $api_url           = get_option(TRUFI_API_URL_OPTION);
-        $page_title        = get_bloginfo('name');
+        $map_id   = get_query_var('trufi_map_id');
+        $map_name = get_query_var('trufi_map_name');
+        $api_url  = get_option(TRUFI_API_URL_OPTION);
+
+        $trufiApi  = new TrufiApi($api_url);
+        $routeData = $trufiApi->fetchRoute($map_id);
+
+        $page_title        = $routeData['data']['pattern']['route']['longName'] . ' - ' . get_bloginfo('name');
         $page_description  = get_option(TRUFI_SITE_DESCRIPTION_OPTION);
         $line_color        = get_option(TRUFI_LINE_COLOR_OPTION);
         $line_weight       = get_option(TRUFI_LINE_WEIGHT_OPTION);
@@ -14,7 +20,7 @@ function trufi_maps_template_redirect() {
         $apple_store_url   = get_option(TRUFI_APPLE_STORE_URL_OPTION);
         $google_play_image = get_option(TRUFI_GOOGLE_PLAY_IMAGE_OPTION);
         $apple_store_image = get_option(TRUFI_APPLE_STORE_IMAGE_OPTION);
-        $map_page_template = get_option(TRUFI_MAP_PAGE_TEMPLATE_OPTION);
+        $map_page_id       = get_option(TRUFI_MAP_PAGE_ID_OPTION);
 
         add_action('wp_head', function () use ($page_title, $page_description) {
             trufi_add_header_tags($page_title, $page_description);
@@ -31,6 +37,7 @@ function trufi_maps_template_redirect() {
             "{{appleStoreUrl}}"   => $apple_store_url,
             "{{googlePlayImage}}" => $google_play_image,
             "{{appleStoreImage}}" => $apple_store_image,
+            "{{routeData}}"       => json_encode($routeData),
         ];
 
         $template_path    = plugin_dir_path(__FILE__) . '../templates/map-template.html';
@@ -39,24 +46,31 @@ function trufi_maps_template_redirect() {
 
         global $post;
 
-        $post->ID             = 0;
+        $post->ID             = $map_page_id;
         $post->post_title     = $page_title;
         $post->post_name      = $map_name;
         $post->post_content   = minify_html($template_content);
         $post->comment_status = 'closed';
         $post->post_type      = 'page';
         $post->post_status    = 'publish';
-        $post->post_parent    = 0;
+        $post->post_parent    = $map_page_id;
         $post->menu_order     = 0;
         $post->comment_count  = 0;
 
+
+        add_action('the_title', function () use ($page_title) {
+            $title = $page_title;
+            return $title;
+        });
+
         global $wp_query;
         $wp_query->is_singular = true;
+        $wp_query->is_page     = true;
+        $wp_query->is_home     = false;
     }
 }
 
-
-add_filter('template_include', function ($template) {
+/*add_filter('template_include', function ($template) {
     global $post;
     if ($post->ID === 0) {
 
@@ -81,4 +95,4 @@ add_filter('template_include', function ($template) {
     }
 
     return $template;
-});
+});*/
