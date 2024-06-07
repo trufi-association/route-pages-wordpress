@@ -47,8 +47,8 @@ function trufi_routes_settings_page() {
         update_option(TRUFI_MAP_PAGE_ID_OPTION, $map_page_id);
         update_option(TRUFI_CACHE_TTL_OPTION, $cache_ttl);
 
-        add_action('init', 'trufi_maps_add_rewrite_rules');
-
+        delete_trufi_transients();
+        trufi_maps_add_rewrite_rules();
 
         echo '<div class="notice notice-success is-dismissible"><p>' . __('Configuration saved.', 'TrufiApi-maps') . '</p></div>';
     }

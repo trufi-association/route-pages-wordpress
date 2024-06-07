@@ -22,18 +22,23 @@ function clear_trufi_caches() {
         return;
     }
 
-    global $wpdb;
-
-    // Delete all Trufi route transients
-    $wpdb->query("DELETE FROM {$wpdb->options} 
-                        WHERE option_name LIKE '_transient_trufi_route%'
-                        OR  option_name LIKE '_transient_timeout_trufi_route%';");
+    delete_trufi_transients();
 
     wp_redirect(add_query_arg('cache_cleared', 'true', admin_url('admin.php?page=trufi-cache-settings')));
     exit;
 }
 
 add_action('admin_post_clear_trufi_caches', 'clear_trufi_caches');
+
+function delete_trufi_transients() {
+    global $wpdb;
+
+    // Delete all Trufi route transients
+    $wpdb->query("DELETE FROM {$wpdb->options} 
+                        WHERE option_name LIKE '_transient_trufi_route%'
+                        OR  option_name LIKE '_transient_timeout_trufi_route%'
+;");
+}
 
 
 function display_trufi_cache_cleared_notice() {

@@ -1,6 +1,6 @@
 <?php
 
-use Api\TrufiApi;
+use App\Api\TrufiApi;
 
 add_action('template_redirect', 'trufi_maps_template_redirect');
 function trufi_maps_template_redirect() {
@@ -21,7 +21,7 @@ function trufi_maps_template_redirect() {
         }
 
         $page_title        = $routeData['data']['pattern']['route']['longName'] . ' - ' . get_bloginfo('name');
-        $page_description  = get_option(TRUFI_SITE_DESCRIPTION_OPTION);
+        $page_description  = get_option(TRUFI_SITE_DESCRIPTION_OPTION) . ' ' . $routeData['data']['pattern']['route']['longName'];
         $line_color        = get_option(TRUFI_LINE_COLOR_OPTION);
         $line_weight       = get_option(TRUFI_LINE_WEIGHT_OPTION);
         $google_play_url   = get_option(TRUFI_GOOGLE_PLAY_URL_OPTION);

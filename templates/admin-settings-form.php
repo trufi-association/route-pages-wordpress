@@ -107,7 +107,7 @@
                     <label for="trufi_cache_ttl"><?php _e('Cache TTL (Hours)', 'TrufiApi-maps'); ?></label>
                 </th>
                 <td>
-                    <input type="number" name="trufi_cache_ttl" id="trufi_cache_ttl" value="<?php echo esc_attr($cache_ttl); ?>" class="small-text">
+                    <input type="number" name="trufi_cache_ttl" id="trufi_cache_ttl" value="<?php echo esc_attr($cache_ttl); ?>" min="0" step="1" class="small-text">
                     <p class="description"><?php _e('Enter the time to live (in hours) for the sitemap cache. Set to 0 to disable.', 'TrufiApi-maps'); ?></p>
                 </td>
             </tr>
